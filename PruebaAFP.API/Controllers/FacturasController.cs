@@ -25,7 +25,7 @@ namespace PruebaAFP.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Factura>>> GetFacturas()
         {
-            return await _context.Facturas.ToListAsync();
+            return await _context.Facturas.Include(x => x.Vehiculo).Include(x => x.TipoTramite).Include(x => x.Cliente).ToListAsync();
         }
 
         // GET: api/Facturas/5

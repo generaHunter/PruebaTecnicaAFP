@@ -25,7 +25,7 @@ namespace PruebaAFP.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Vehiculo>>> GetVehiculos()
         {
-            return await _context.Vehiculos.ToListAsync();
+            return await _context.Vehiculos.Include(x => x.TipoTramite).ToListAsync();
         }
 
         // GET: api/Vehiculoes/5
@@ -41,6 +41,23 @@ namespace PruebaAFP.API.Controllers
 
             return vehiculo;
         }
+
+
+        // GET: api/Vehiculoes/5
+        [HttpGet]
+        [Route("GetVehiculoByTramite/{id}")]
+        public async Task<ActionResult<List<Vehiculo>>> GetVehiculoByTramite(int id)
+        {
+            var vehiculos = await _context.Vehiculos.Where(x => x.TipoTramiteId == id).ToListAsync();
+
+            if (vehiculos == null)
+            {
+                return NotFound();
+            }
+
+            return vehiculos;
+        }
+
 
         // PUT: api/Vehiculoes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -104,5 +121,6 @@ namespace PruebaAFP.API.Controllers
         {
             return _context.Vehiculos.Any(e => e.Id == id);
         }
+
     }
 }

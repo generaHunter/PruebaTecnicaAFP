@@ -12,6 +12,7 @@ using PruebaAFP.API.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace PruebaAFP.API
@@ -32,7 +33,8 @@ namespace PruebaAFP.API
             options.UseSqlServer(
             Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(x =>
+   x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PruebaAFP.API", Version = "v1" });

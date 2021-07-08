@@ -1,0 +1,91 @@
+﻿@model IEnumerable<PruebaTecnicaAFP.Models.Vehiculo>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section Style {
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.2/sweetalert2.all.js"></script>
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Marca)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TipoTramiteId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrecioTramite)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Marca)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TipoTramite.Tipo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PrecioTramite)
+                </td>
+                <td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info">Edit</a> |
+                    <a data-link="@item.Id" class="cancel on-default remove-row btn btn-danger text-white">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+
+    <script>
+        $(document).ready(function () {
+            $(".cancel").click(function (e) {
+                e.preventDefault();
+                var id = Number(this.getAttribute("data-link"));
+                swal({
+                    title: 'Eliminar Vehiculo?',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No',
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+
+                            url: "/Vehiculos/DeleteVehiculo",
+                            data: {
+                                id: id
+                            },
+                            success: function () {
+                                window.location.reload();
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}
